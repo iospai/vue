@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,19 +8,20 @@
     <title>Document</title>
     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
 </head>
+
 <body>
     <!-- 视图层 -->
     <div id="app">
-            <input type="text" name="num1" v-model="num1">
-            <select name="operator" v-model="operator">
-                    <option value="+">+</option>
-                    <option value="-">-</option>
-                    <option value="*">*</option>
-                    <option value="/">/</option>
-            </select>
-            <input type="text" name="num2" v-model="num2">
-            <input type="button" value="=" @click="click">
-            <input type="text" name="num3" v-model="num3">
+        <input type="text" name="num1" v-model="num1">
+        <select name="operator" v-model="operator">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select>
+        <input type="text" name="num2" v-model="num2">
+        <input type="button" value="=" @click="click">
+        <input type="text" name="num3" v-model="num3">
     </div>
 
     <!-- VM层（挂载数据层） -->
@@ -48,4 +50,5 @@
         });
     </script>
 </body>
+
 </html>
