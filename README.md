@@ -204,6 +204,48 @@ Vue不建议用户直接操作DOM
 </script>
 ```
 
-
-
 ### 实例2：简易计算器
+
+```html
+
+<!-- 视图层 -->
+<div id="app">
+    <input type="text" name="num1" v-model="num1">
+    <select name="operator" v-model="operator">
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="*">*</option>
+        <option value="/">/</option>
+    </select>
+    <input type="text" name="num2" v-model="num2">
+    <input type="button" value="=" @click="click">
+    <input type="text" name="num3" v-model="num3">
+</div>
+
+<!-- VM层（挂载数据层） -->
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            num1: 0,
+            num2: 0,
+            num3: '',
+            operator: '+'
+        },
+        methods: {
+            click() {
+                if ('+' === this.operator) {
+                    this.num3 = parseInt(this.num1) + parseInt(this.num2);
+                } else if ('-' === this.operator) {
+                    this.num3 = parseInt(this.num1) - parseInt(this.num2);
+                } else if ('*' === this.operator) {
+                    this.num3 = parseInt(this.num1) * parseInt(this.num2);
+                } else {
+                    this.num3 = parseInt(this.num1) / parseInt(this.num2);
+                }
+            }
+        }
+    });
+</script>
+```
+
