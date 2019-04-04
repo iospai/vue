@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <style>
+        span {
+            color: rgb(65, 105, 65);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 视图层 -->
+    <div id="app">
+        <!-- 普通插值 -->
+        <p>插值普通字符串变量：<span>内容前缀-{{ message }}-内容后缀</span></p>
+        <p>插值HTML片段：<span>内容前缀-{{ html }}-内容后缀</span></p>
+        <p>插值函数返回值：<span>内容前缀-{{ datastring('你好') }}-内容后缀</span></p>
+        <!-- v-text指令 -->
+        <p>v-text指令渲染普通字符串变量：<span v-text="message">原内容会被覆盖掉</span></p>
+        <p>v-text指令渲染HTML片段：<span v-text="html">原内容会被覆盖掉</span></p>
+        <p>v-text指令渲染函数返回值：<span v-text="datastring('你好')">原内容会被覆盖掉</span></p>
+        <!-- v-html -->
+        <p>v-html指令渲染HTML片段：<span v-html="html">原内容会被覆盖掉</span></p>
+    </div>
+
+    <!-- VM层（挂载数据层） -->
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                message: '消息内容',
+                html: '<strong>HTML片段</strong>',
+            },
+            methods: {
+                datastring(greeting) {
+                    return greeting + ', 今天是' + new Date().toLocaleString();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

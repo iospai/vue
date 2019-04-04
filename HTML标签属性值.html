@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <style>
+        input {
+            color: rgb(65, 105, 65);
+        }
+    </style>
 </head>
+
 <body>
     <!-- 视图层 -->
     <div id="app">
-        {{ message }}
+        <!-- 标签属性值 -->
+        <input type="button" v-bind:value="title">
+        <!-- 简写 -->
+        <input type="button" :value="title">
     </div>
 
     <!-- VM层（挂载数据层） -->
@@ -18,9 +28,10 @@
         var vm = new Vue({
             el: '#app',
             data: {
-                message: 'Hello World!'
+                title: '按钮标题',
             }
         });
     </script>
 </body>
+
 </html>

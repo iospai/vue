@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+</head>
+
+<body>
+    <!-- 视图层 -->
+    <div id="app">
+        <p>{{ message }}</p>
+        <input type="button" value="开始" @click="start">
+        <input type="button" value="结束" @click="stop">
+    </div>
+
+    <!-- VM层（挂载数据层） -->
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello World!',
+                interval: null
+            },
+            methods: {
+                start() {
+                    if (this.interval == null) {
+                        this.interval = setInterval(() => {
+                            var str1 = this.message.substring(0, 1);
+                            var str2 = this.message.substring(1);
+                            this.message = str2 + str1;
+                        }, 300);
+                    }
+                },
+                stop() {
+                    clearInterval(this.interval);
+                    this.interval = null;
+                },
+            }
+        });
+    </script>
+</body>
+
+</html>
