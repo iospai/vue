@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <style>
+        .color {
+            color: green;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .italic {
+            font-style: italic;
+        }
+
+        .size {
+            font-size: 200%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 视图层 -->
+    <div id="app">
+        <p>没有样式</p>
+        <!-- class样式 -->
+        <p class="color bold italic size">普通文本样式</p>
+        <p :class="['color', 'bold', 'italic', 'size']">Vue属性绑定数组</p>
+        <p :class="['color', 'bold', 'italic', flag ? 'size' : '']">Vue属性绑定数组-使用三元表达式</p>
+        <p :class="['color', 'bold', 'italic', {size : flag}]">Vue属性绑定数组-嵌套对象</p>
+        <p :class="{color : flag, bold : flag, italic : flag, size : flag}">Vue属性绑定-对象</p>
+        <p :class="classObj">Vue属性绑定-对象</p>
+        <!-- <p :class="classObj()">Vue属性绑定-对象</p> -->
+        <!-- 内联样式 -->
+        <p style="color: red;font-weight: bold;">内联样式-普通文本样式</p>
+        <p :style="styleObj">Vue属性绑定-内联样式-普通文本样式-对象</p>
+        <p :style="[styleObj, style2Obj]">Vue属性绑定-内联样式-普通文本样式-对象数组</p>
+    </div>
+
+    <!-- VM层（挂载数据层） -->
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                flag: true,
+                // classObj:{color : this.flag, bold : this.flag, italic : this.flag, size : this.flag},
+                classObj: { color: true, bold: true, italic: true, size: true },
+                styleObj: { color: 'red', 'font-weight': 'bold' },
+                style2Obj: { 'font-size': '200%' },
+            },
+            methods: {
+                // classObj() {
+                //     return {color : this.flag, bold : this.flag, italic : this.flag, size : this.flag};
+                // }
+            }
+        });
+    </script>
+</body>
+
+</html>

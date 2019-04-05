@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+</head>
+<body>
+    <!-- 视图层 -->
+    <div id="app">
+        <div>
+                <label for="id">ID:<input type="text" v-model="id"></label>
+                <label for="name">姓名:<input type="text" v-model="name"></label>
+                <input type="submit" value="提交" @click="click">
+        </div>
+        <!-- <p v-for="friend in friends">
+            <input type="checkbox">
+            ID:{{ friend.id }},姓名:{{ friend.name }}
+        </p> -->
+
+        <p v-for="friend in friends" :key='id'>
+            <input type="checkbox">
+            ID:{{ friend.id }},姓名:{{ friend.name }}
+        </p>
+    </div>
+
+    <!-- VM层（挂载数据层） -->
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                id: '',
+                name: '',
+                friends: [
+                    {id:2, name:'张三'},
+                    {id:3, name:'李四'},
+                    {id:4, name:'小明'},
+                ],
+            },
+            methods: {
+                click() {
+                    this.friends.unshift({id:this.id, name:this.name});
+                }
+            }
+        });
+    </script>
+</body>
+</html>

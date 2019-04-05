@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+</head>
+<body>
+    <!-- 视图层 -->
+    <div id="app">
+        <!-- 迭代数组 -->
+        <p v-for="hobby in hobbies">{{ hobby }}</p>
+        <p v-for="(hobby, key) in hobbies">索引:{{ key }} - {{ hobby }}</p>
+        <p v-for="friend in friends">姓名:{{ friend.name }},年龄:{{friend.age}}</p>
+        <!-- 迭代对象属性 -->
+        <p v-for="item in address">{{item}}</p>
+        <p v-for="(item, key) in address">{{key}} : {{item}}</p>
+        <p v-for="(item, key, index) in address">索引:{{ index }} - {{key}} : {{item}}</p>
+        <!-- 迭代数字 -->
+        <p v-for="num in 5">{{num}}</p>
+        <p v-for="(num, index) in 5">索引:{{ index }} - {{ num }}</p>
+    </div>
+
+    <!-- VM层（挂载数据层） -->
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                hobbies: ['绘画', '唱歌', '游泳', '篮球'],
+                friends: [
+                    {name:'张三', age:18},
+                    {name:'李四', age:19},
+                    {name:'小明', age:20},
+                ],
+                address: {
+                    state: 'China',
+                    province: 'Shanghai',
+                    city: 'Shanghai',
+                    street: 'No. xxx Jianguo Middle Road'
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -119,6 +119,66 @@ Vue不建议用户直接操作DOM
 
 > 说明：v-on指令简写为`@`。
 
+### 事件修饰符
+
+```html
+
+<!-- 视图层 -->
+<div id="app">
+    <h4>事件冒泡</h4>
+    <div style="width: 300px;height: 90px;background-color: gray;" @click="outerHandler">外部div
+        <div style="width: 80%;background-color: yellow;" @click="middleHandler"> 中间div
+            <div style="width: 60%;background-color: green;" @click="innerHandler"> 内部div</div>
+        </div>
+    </div>
+    <h4>stop修饰符——阻止冒泡</h4>
+    <div style="width: 300px;height: 90px;background-color: gray;" @click="outerHandler">外部div
+        <div style="width: 80%;background-color: yellow;" @click.stop="middleHandler"> 中间div
+            <div style="width: 60%;background-color: green;" @click="innerHandler"> 内部div</div>
+        </div>
+    </div>
+    <h4>self修饰符——只有自己才会触发事件</h4>
+    <div style="width: 300px;height: 90px;background-color: gray;" @click="outerHandler">外部div
+        <div style="width: 80%;background-color: yellow;" @click.self="middleHandler"> 中间div
+            <div style="width: 60%;background-color: green;" @click="innerHandler"> 内部div</div>
+        </div>
+    </div>
+    <h4>once修饰符——只触发一次</h4>
+    <div style="width: 300px;height: 90px;background-color: gray;" @click="outerHandler">外部div
+        <div style="width: 80%;background-color: yellow;" @click.once="middleHandler"> 中间div
+            <div style="width: 60%;background-color: green;" @click="innerHandler"> 内部div</div>
+        </div>
+    </div>
+    <h4>privent修饰符——阻止默认行为</h4>
+    <a href="./01、HelloWorld.html" @click="outerHandler">超链接添加onclick事件</a>
+    <a href="./01、HelloWorld.html" @click.prevent="outerHandler">添加privent修饰符</a>
+    <h4>capture修饰符——实现事件捕获机制</h4>
+    <div style="width: 300px;height: 90px;background-color: gray;" @click.capture="outerHandler">外部div
+        <div style="width: 80%;background-color: yellow;" @click.once="middleHandler"> 中间div
+            <div style="width: 60%;background-color: green;" @click="innerHandler"> 内部div</div>
+        </div>
+    </div>
+    <h4>修饰符组合使用</h4>
+    <a href="./01、HelloWorld.html" @click.prevent.once="outerHandler">添加privent修饰符</a>
+</div>
+
+<!-- VM层（挂载数据层） -->
+<script>
+    var vm = new Vue({
+        el: '#app',
+        methods: {
+            outerHandler() { console.log('点击了外部div'); },
+            middleHandler() { console.log('点击了中间div'); },
+            innerHandler() { console.log('点击了内部div'); },
+        }
+    });
+</script>
+```
+
+> 说明：1、stop修饰符和self修饰符的区别：self修饰符只阻止当前元素触发，不阻止其他元素的事件冒泡；
+>
+> ​          2、修饰符组合使用，顺序无关。
+
 #### v-cloak解决插值预显示问题
 
 ```css
@@ -248,4 +308,93 @@ Vue不建议用户直接操作DOM
     });
 </script>
 ```
+
+### 样式属性绑定
+
+```html
+<!-- 视图层 -->
+<div id="app">
+    <p>没有样式</p>
+    <!-- class样式 -->
+    <p class="color bold italic size">普通文本样式</p>
+    <p :class="['color', 'bold', 'italic', 'size']">Vue属性绑定数组</p>
+    <p :class="['color', 'bold', 'italic', flag ? 'size' : '']">Vue属性绑定数组-使用三元表达式</p>
+    <p :class="['color', 'bold', 'italic', {size : flag}]">Vue属性绑定数组-嵌套对象</p>
+    <p :class="{color : flag, bold : flag, italic : flag, size : flag}">Vue属性绑定-对象</p>
+    <p :class="classObj">Vue属性绑定-对象</p>
+    <p :class="">Vue属性绑定-对象1111</p>
+    <!-- <p :class="classObj()">Vue属性绑定-对象</p> -->
+    <!-- 内联样式 -->
+    <p style="color: red;font-weight: bold;">内联样式-普通文本样式</p>
+    <p :style="styleObj">Vue属性绑定-内联样式-普通文本样式-对象</p>
+    <p :style="[styleObj, style2Obj]">Vue属性绑定-内联样式-普通文本样式-对象数组</p>
+</div>
+
+<!-- VM层（挂载数据层） -->
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            flag: true,
+            // classObj:{color : this.flag, bold : this.flag, italic : this.flag, size : this.flag},
+            classObj: { color: true, bold: true, italic: true, size: true },
+            styleObj: { color: 'red', 'font-weight': 'bold' },
+            style2Obj: { 'font-size': '200%' },
+        },
+        methods: {
+            // classObj() {
+            //     return {color : this.flag, bold : this.flag, italic : this.flag, size : this.flag};
+            // }
+        }
+    });
+</script>
+```
+
+## 流程控制
+
+### v-for指令
+
+```html
+<!-- 视图层 -->
+<div id="app">
+    <!-- 迭代数组 -->
+    <p v-for="hobby in hobbies">{{ hobby }}</p>
+    <p v-for="(hobby, key) in hobbies">索引:{{ key }} - {{ hobby }}</p>
+    <p v-for="friend in friends">姓名:{{ friend.name }},年龄:{{friend.age}}</p>
+    <!-- 迭代对象属性 -->
+    <p v-for="item in address">{{item}}</p>
+    <p v-for="(item, key) in address">{{key}} : {{item}}</p>
+    <p v-for="(item, key, index) in address">索引:{{ index }} - {{key}} : {{item}}</p>
+    <!-- 迭代数字 -->
+    <p v-for="num in 5">{{num}}</p>
+    <p v-for="(num, index) in 5">索引:{{ index }} - {{ num }}</p>
+</div>
+
+<!-- VM层（挂载数据层） -->
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            hobbies: ['绘画', '唱歌', '游泳', '篮球'],
+            friends: [
+                {name:'张三', age:18},
+                {name:'李四', age:19},
+                {name:'小明', age:20},
+            ],
+            address: {
+                state: 'China',
+                province: 'Shanghai',
+                city: 'Shanghai',
+                street: 'No. xxx Jianguo Middle Road'
+            }
+        }
+    });
+</script>
+```
+
+> 说明：1、遍历数组，遍历项从左向右依次是值（value），索引(index)；遍历对象，遍历项从左向右依次是值（value），键（key），索引(index)；
+>
+> ​            2、迭代数字是从1开始的。
+
+### v-if指令
 

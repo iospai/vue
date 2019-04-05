@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <style>
+        aaa {
+            padding-right: 20% padding: 10px;
+            width: 100%;
+            background: gray;
+            background: green;
+            background: yellow;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 视图层 -->
+    <div id="app">
+        <h4>事件冒泡</h4>
+        <div style="width: 300px;height: 90px;background-color: gray;" @click="outerHandler">外部div
+            <div style="width: 80%;background-color: yellow;" @click="middleHandler"> 中间div
+                <div style="width: 60%;background-color: green;" @click="innerHandler"> 内部div</div>
+            </div>
+        </div>
+        <h4>stop修饰符——阻止冒泡</h4>
+        <div style="width: 300px;height: 90px;background-color: gray;" @click="outerHandler">外部div
+            <div style="width: 80%;background-color: yellow;" @click.stop="middleHandler"> 中间div
+                <div style="width: 60%;background-color: green;" @click="innerHandler"> 内部div</div>
+            </div>
+        </div>
+        <h4>self修饰符——只有自己才会触发事件</h4>
+        <div style="width: 300px;height: 90px;background-color: gray;" @click="outerHandler">外部div
+            <div style="width: 80%;background-color: yellow;" @click.self="middleHandler"> 中间div
+                <div style="width: 60%;background-color: green;" @click="innerHandler"> 内部div</div>
+            </div>
+        </div>
+        <h4>once修饰符——只触发一次</h4>
+        <div style="width: 300px;height: 90px;background-color: gray;" @click="outerHandler">外部div
+            <div style="width: 80%;background-color: yellow;" @click.once="middleHandler"> 中间div
+                <div style="width: 60%;background-color: green;" @click="innerHandler"> 内部div</div>
+            </div>
+        </div>
+        <h4>privent修饰符——阻止默认行为</h4>
+        <a href="./01、HelloWorld.html" @click="outerHandler">超链接添加onclick事件</a>
+        <a href="./01、HelloWorld.html" @click.prevent="outerHandler">添加privent修饰符</a>
+        <h4>capture修饰符——实现事件捕获机制</h4>
+        <div style="width: 300px;height: 90px;background-color: gray;" @click.capture="outerHandler">外部div
+            <div style="width: 80%;background-color: yellow;" @click.once="middleHandler"> 中间div
+                <div style="width: 60%;background-color: green;" @click="innerHandler"> 内部div</div>
+            </div>
+        </div>
+        <h4>修饰符组合使用</h4>
+        <a href="./01、HelloWorld.html" @click.prevent.once="outerHandler">添加privent修饰符</a>
+    </div>
+
+    <!-- VM层（挂载数据层） -->
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            methods: {
+                outerHandler() { console.log('点击了外部div'); },
+                middleHandler() { console.log('点击了中间div'); },
+                innerHandler() { console.log('点击了内部div'); },
+            }
+        });
+    </script>
+</body>
+
+</html>
