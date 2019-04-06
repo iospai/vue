@@ -453,6 +453,74 @@ Vue不建议用户直接操作DOM
 
 v-if指令和v-show指令
 
+```html
+
+<!-- 视图层 -->
+<div id="app">
+    <!-- <input type="button" value="切换状态" @click="toggle"> -->
+    <input type="button" value="切换状态" @click="flag=!flag">
+    <p v-if="flag">这是v-if控制的元素</p>
+    <p v-show="flag">这是v-show控制的元素</p>
+</div>
+
+<!-- VM层（挂载数据层） -->
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            flag: true
+        },
+        methods: {
+            // toggle() {
+            //     this.flag = !this.flag;
+            // }
+        }
+    });
+</script>
+```
+
+> 区别：
+>
+> ​		v-if指令：每次都会删除或者穿件元素，切换性能消耗较高；
+>
+> ​		v-show指令：只是切换元素的`display: block;`和`display: none;`，初始渲染消耗较高。
+>
+> 总结：如果元素涉及到频繁的切换，不建议使用v-if指令。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
