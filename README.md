@@ -398,3 +398,76 @@ Vue不建议用户直接操作DOM
 
 ### v-if指令
 
+```html
+<!-- 视图层 -->
+<div id="app">
+    <div>
+        <label for="name">姓名:<input type="text" v-model="name"></label>
+        <label for="age">年龄:<input type="text" v-model="age"></label>
+        <input type="submit" value="提交" @click="click">
+    </div>
+
+    <!-- 情景1：默认使用 -->
+    <!-- <p v-for="(friend,i) in friends">
+        <input type="checkbox">
+        索引:{{ i }},姓名:{{ friend.name }},年龄:{{ friend.age }}
+    </p> -->
+
+    <!-- 情景2：默认key为索引，导致在前面加入元素的时候，checkbox控件选中的始终是索引为key的数据 -->
+    <!-- <p v-for="(friend,i) in friends" :key="i">
+            <input type="checkbox">
+            索引:{{ i }},姓名:{{ friend.name }},年龄:{{ friend.age }}
+        </p> -->
+
+    <!-- 情景3：对象唯一，作为key -->
+    <p v-for="(friend,i) in friends" :key="friend">
+        <input type="checkbox">
+        索引:{{ i }},姓名:{{ friend.name }},年龄:{{ friend.age }}
+    </p>
+</div>
+
+<!-- VM层（挂载数据层） -->
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            name: '',
+            age: '',
+            friends: [
+                { name: '张三', age: 18 },
+                { name: '李四', age: 19 },
+                { name: '小明', age: 20 },
+            ],
+        },
+        methods: {
+            click() {
+                // this.friends.push({name:this.name, age:this.age});
+                this.friends.unshift({ name: this.name, age: this.age });
+            }
+        }
+    });
+</script>
+```
+
+> 在组件中，使用v-for指令循环时，使用属性绑定`:key`作为唯一值。
+
+v-if指令和v-show指令
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

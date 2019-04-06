@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,22 +8,32 @@
     <title>Document</title>
     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
 </head>
+
 <body>
     <!-- 视图层 -->
     <div id="app">
         <div>
-                <label for="id">ID:<input type="text" v-model="id"></label>
-                <label for="name">姓名:<input type="text" v-model="name"></label>
-                <input type="submit" value="提交" @click="click">
+            <label for="name">姓名:<input type="text" v-model="name"></label>
+            <label for="age">年龄:<input type="text" v-model="age"></label>
+            <input type="submit" value="提交" @click="click">
         </div>
-        <!-- <p v-for="friend in friends">
+
+        <!-- 情景1：默认使用 -->
+        <!-- <p v-for="(friend,i) in friends">
             <input type="checkbox">
-            ID:{{ friend.id }},姓名:{{ friend.name }}
+            索引:{{ i }},姓名:{{ friend.name }},年龄:{{ friend.age }}
         </p> -->
 
-        <p v-for="friend in friends" :key='id'>
+        <!-- 情景2：默认key为索引，导致在前面加入元素的时候，checkbox控件选中的始终是索引为key的数据 -->
+        <!-- <p v-for="(friend,i) in friends" :key="i">
+                <input type="checkbox">
+                索引:{{ i }},姓名:{{ friend.name }},年龄:{{ friend.age }}
+            </p> -->
+
+        <!-- 情景3：对象唯一，作为key -->
+        <p v-for="(friend,i) in friends" :key="friend">
             <input type="checkbox">
-            ID:{{ friend.id }},姓名:{{ friend.name }}
+            索引:{{ i }},姓名:{{ friend.name }},年龄:{{ friend.age }}
         </p>
     </div>
 
@@ -31,20 +42,22 @@
         var vm = new Vue({
             el: '#app',
             data: {
-                id: '',
                 name: '',
+                age: '',
                 friends: [
-                    {id:2, name:'张三'},
-                    {id:3, name:'李四'},
-                    {id:4, name:'小明'},
+                    { name: '张三', age: 18 },
+                    { name: '李四', age: 19 },
+                    { name: '小明', age: 20 },
                 ],
             },
             methods: {
                 click() {
-                    this.friends.unshift({id:this.id, name:this.name});
+                    // this.friends.push({name:this.name, age:this.age});
+                    this.friends.unshift({ name: this.name, age: this.age });
                 }
             }
         });
     </script>
 </body>
+
 </html>
