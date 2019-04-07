@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+</head>
+<body>
+    <!-- 视图层 -->
+    <div id="app">
+        <p id="content">{{ message }}</p>
+        <input type="text" v-model="message">
+    </div>
+
+    <!-- VM层（挂载数据层） -->
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello World!'
+            },
+            methods: {
+                show() {
+                    console.log('执行了自定义show函数');
+                }
+            },
+            // 创建时
+            beforeCreate(){
+                console.log('[step 1] beforeCreate');
+                console.log(this.message);//undefined
+                console.log(this.show);//undefined
+                // 此时： data 和 methods 中的属性都未初始化
+            },
+            created(){
+                console.log('[step 2] beforeCreate');
+                console.log(this.message);//undefined
+                console.log(this.show);//undefined
+                // 此时： data 和 methods 完成初始化
+                // 访问 data 和 methods 的属性，最早只能在created函数
+            },
+            beforeMount() {
+                console.log('[step 3] beforeMount');
+                console.log(document.getElementById('content').innerHTML);//{{ message }}
+                // 此时：模板已经编译完成到内存，尚未把模板渲染到页面 
+            },
+            mounted() {
+                console.log('[step 4] mounted');
+                console.log(document.getElementById('content').innerHTML);//Hello World!
+                // 此时： 操作DOM节点。
+                // Vue实例初始化完毕。
+            },
+
+            // 运行时
+            beforeUpdate() {
+                console.log('[step 5] beforeUpdate');
+                console.log(document.getElementById('content').innerHTML);//{{ message }}
+                // 此时：此时界面还未被更新。执行0~N次 
+            },
+            updated() {
+                console.log('[step 6] updated');
+                console.log(document.getElementById('content').innerHTML);//{{ message }}
+                // 此时： 
+            },
+
+            // 销毁时
+            beforeDestory() {
+                console.log('[step 7] beforeDestory');
+                console.log(document.getElementById('content').innerHTML);//{{ message }}
+                // 此时：
+            },
+            destroyed() {
+                console.log('[step 8] destroyed');
+                console.log(document.getElementById('content').innerHTML);//{{ message }}
+                // 此时： 
+            },
+        });
+    </script>
+</body>
+</html>

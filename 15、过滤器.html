@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+</head>
+
+<body>
+    <!-- 视图层 -->
+    <div id="app">
+        <p>{{ message }}</p>
+        <p>{{ message | messageFormat }}</p>
+        <p>{{ message | messageFormat2('大雾') }}</p>
+        <p>{{ message | messageFormat2('阴天') }}</p>
+        <p>{{ message | messageFormat2('大雾') | messageFormat3('后天') }}</p>
+        <p>{{ message | messageFormat4('大雾', '后天') }}</p>
+        <p>{{ ctime | dateFormat }}</p>
+    </div>
+
+    <div id="app2">
+        <p>{{ ctime | dateFormat }}</p>
+    </div>
+
+    <!-- VM层（挂载数据层） -->
+    <script>
+        Vue.filter('messageFormat', function (data) {
+            return data.replace('晴天', '雨雪');
+        });
+
+        Vue.filter('messageFormat2', function (data, arg) {
+            return data.replace('晴天', arg);
+        });
+
+        Vue.filter('messageFormat3', function (data, arg) {
+            return data.replace('今天', arg);
+        });
+
+        Vue.filter('messageFormat3', function (data, arg) {
+            return data.replace('今天', arg);
+        });
+
+        Vue.filter('messageFormat4', function (data, arg1, arg2) {
+            return data.replace('晴天', arg1).replace('今天', arg2);
+        });
+
+        // 全局过滤器和私有过滤器
+        Vue.filter('dateFormat', function (data) {
+            return new Date(data).toLocaleString();
+        });
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                message: '今天的天气是 晴天！',
+                ctime: new Date()
+            }
+        });
+
+        var vm2 = new Vue({
+            el: '#app2',
+            data: {
+                ctime: new Date()
+            },
+            filters: {//私有过滤器
+                dateFormat(data) {
+                    return new Date(data).toLocaleDateString();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

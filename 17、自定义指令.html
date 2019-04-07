@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+</head>
+
+<body>
+    <!-- 视图层 -->
+    <div id="app">
+        <input type="text" v-focus v-color="'green'">
+        <h3 v-color="'pink'">{{ message }}</h3>  
+        <p v-fontweight="100+200 * 4">{{ message }}</p>  
+        <p v-backgroundcolor="'red'">{{ message }}</p>  
+    </div>
+
+    <!-- VM层（挂载数据层） -->
+    <script>
+        Vue.directive('focus', {
+            bind(el) {
+                console.log('指令的声明周期之 bind');
+            },
+            inserted(el) {
+                el.focus();
+                console.log('指令的声明周期之 inserted');
+            },
+            updated() {
+                console.log('指令的声明周期之 updated');
+            }
+        });
+        // 自定义一个 设置字体颜色的 指令
+        Vue.directive('color', {
+            // 样式只有通过指令绑定给了元素，不管这个元素有没有插到页面中去，这个元素肯定有一个内联样式，肯定会显示到页面。
+            bind: function (el, binding) {
+                console.log(binding);
+                el.style.color = binding.value;
+            }
+        });
+        // 如果在bind和inserted触发相同的行为，二部关心其他钩子函数
+        Vue.directive('backgroundcolor', function(el, binding){
+            el.style.backgroundColor = binding.value;
+        });
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello World!'
+            },
+            // 局部指令
+            directives: {
+            //     focus: {
+            //         inserted: function(el) { el.focus();}
+            //     },
+            fontweight: {
+                    bind:function(el, binding) {
+                        el.style.fontWeight = binding.value;}
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+</head>
+
+<body>
+    <!-- 视图层 -->
+    <div id="app">
+        <input type="text" v-model="text" @keyup.enter="submit('enter')">
+        <!-- F2按键码 触发  按键码 https://cn.vuejs.org/v2/guide/events.html#按键码 -->
+        <input type="text" v-model="text" @keyup.113="submit('113')">
+        <!-- F2按键码别名 触发 -->
+        <input type="text" v-model="text" @keyup.myF2="submit('myF2')">
+    </div>
+
+    <!-- VM层（挂载数据层） -->
+    <script>
+        // 自定义全局按键修饰符
+        Vue.config.keyCodes.myF2 = 113;
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                text: ''
+            },
+            methods: {
+                submit(type) {
+                    console.log(`keyup.${type}输入内容为：${this.text}`);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

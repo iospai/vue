@@ -27,10 +27,14 @@ var vm = new Vue({
 
 [我的第一个Vue应用](./HelloWorld.html)
 
-## 渲染视图
-### 数据填充
+## 基础语法
+
+### 渲染视图
+
+#### 数据填充
+
 Vue不建议用户直接操作DOM
-#### HTML标签Text值
+##### HTML标签Text值
 
 ```html
 <!-- 视图层 -->
@@ -68,7 +72,7 @@ Vue不建议用户直接操作DOM
 >
 > ​           2、v-html指令和v-text指令覆盖标签原有内容，普通插值`{{ var }}`可以拼接显示。
 
-#### HTML标签属性值
+##### HTML标签属性值
 
 ```html
 <!-- 视图层 -->
@@ -92,7 +96,7 @@ Vue不建议用户直接操作DOM
 
 > 说明：v-bind指令简写为`:`。
 
-#### HTML标签事件
+#### 标签事件
 
 ```html
 <!-- 视图层 -->
@@ -119,7 +123,7 @@ Vue不建议用户直接操作DOM
 
 > 说明：v-on指令简写为`@`。
 
-### 事件修饰符
+#### 事件修饰符
 
 ```html
 
@@ -177,7 +181,9 @@ Vue不建议用户直接操作DOM
 
 > 说明：1、stop修饰符和self修饰符的区别：self修饰符只阻止当前元素触发，不阻止其他元素的事件冒泡；
 >
-> ​          2、修饰符组合使用，顺序无关。
+> ​          2、修饰符组合使用，顺序无关;
+>
+> ​          3、`@click`值如果是无参函数，可以忽略。
 
 #### v-cloak解决插值预显示问题
 
@@ -206,7 +212,7 @@ Vue不建议用户直接操作DOM
 </script>
 ```
 
-### 数据的双向绑定
+#### 数据的双向绑定
 
 ```html
 <!-- 视图层 -->
@@ -227,7 +233,9 @@ Vue不建议用户直接操作DOM
 </script>
 ```
 
-### 实例1：跑马灯效果
+> v-show指令只能用于表单元素
+
+#### 实例1：跑马灯效果
 
 ```html
 <!-- 视图层 -->
@@ -264,7 +272,7 @@ Vue不建议用户直接操作DOM
 </script>
 ```
 
-### 实例2：简易计算器
+#### 实例2：简易计算器
 
 ```html
 
@@ -309,7 +317,7 @@ Vue不建议用户直接操作DOM
 </script>
 ```
 
-### 样式属性绑定
+#### 样式属性绑定
 
 ```html
 <!-- 视图层 -->
@@ -350,9 +358,9 @@ Vue不建议用户直接操作DOM
 </script>
 ```
 
-## 流程控制
+### 流程控制
 
-### v-for指令
+#### v-for指令
 
 ```html
 <!-- 视图层 -->
@@ -396,7 +404,7 @@ Vue不建议用户直接操作DOM
 >
 > ​            2、迭代数字是从1开始的。
 
-### v-if指令
+#### v-if指令
 
 ```html
 <!-- 视图层 -->
@@ -487,15 +495,306 @@ v-if指令和v-show指令
 >
 > 总结：如果元素涉及到频繁的切换，不建议使用v-if指令。
 
+## 基础语法应用案例：
+
+```html
+<!-- 视图层 -->
+<div id="app">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">通讯录</h3>
+        </div>
+        <div class="panel-body form-inline">
+            <label for="id">ID：<input type="text" name="id" class="form-control" v-model="id"></label>
+            <label for="name">姓名：<input type="text" name="name" class="form-control" v-model="name"></label>
+            <input type="button" value="添加" class="btn btn-primary" @click="add()">
+            <label for="keyword">模糊筛选：<input type="text" name="keyword" class="form-control" v-model="keyword"
+                    placeholder="名称关键字"></label>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>Name</td>
+                <td>CTime</td>
+                <td>Operation</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="frident in search(keyword)" :key="frident">
+                <!-- <tr v-for="frident in fridents" :key="frident"> -->
+                <td>{{frident.id}}</td>
+                <td>{{frident.name}}</td>
+                <td>{{frident.ctime | dataFilter}}</td>
+                <td>
+                    <a href="" @click.prevent="del(frident.id)">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- VM层（挂载数据层） -->
+<script>
+    Vue.filter('dataFilter', function (datestr) {
+        var dt = new Date(datestr);
+        return dt.toLocaleDateString();
+    });
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            id: '',
+            name: '',
+            keyword: '',
+            fridents: [
+                { id: 1, name: '张三', ctime: new Date() },
+                { id: 2, name: '李四', ctime: new Date() },
+                { id: 3, name: '小明', ctime: new Date() },
+                { id: 4, name: '张小明', ctime: new Date() },
+            ]
+        },
+        methods: {
+            add() {
+                this.fridents.push({ id: this.id, name: this.name, ctime: new Date() });
+                // this.id = '';
+                // this.name = '';
+                this.id = this.name = '';
+            },
+            del(id) {
+                /* this.fridents.some((item, i) => {
+                    if (item.id == id) {
+                        this.fridents.splice(i, 1);
+                        return true;
+                    }
+                }); */
+                var index = this.fridents.findIndex(item => {
+                    if (item.id == id) {
+                        return true;
+                    }
+                });
+                this.fridents.splice(index, 1);
+            },
+            search(k) {
+                // var list = [];
+                // this.fridents.forEach(frident => {
+                //     if(frident.name.indexOf(k) != -1) {
+                //         list.push(frident);
+                //     }
+                // });
+                // return list;
+                return this.fridents.filter(item => {
+                    if (item.name.includes(k)) {
+                        return item;
+                    }
+                });
+            },
+        }
+    });
+</script>
+```
+
+> `some()`、 `findIndex()`方法的使用。
+>
+> Vue提供的[按键码]( https://cn.vuejs.org/v2/guide/events.html#按键码) ，除此，还可以自定义按键码，[js 里面的键盘事件对应的键码](https://www.cnblogs.com/wuhua1/p/6686237.html)
+
+## 高级用法
 
 
 
+### 过滤器
+
+```html
+<!-- 视图层 -->
+<div id="app">
+    <p>{{ message }}</p>
+    <p>{{ message | messageFormat }}</p>
+    <p>{{ message | messageFormat2('大雾') }}</p>
+    <p>{{ message | messageFormat2('阴天') }}</p>
+    <p>{{ message | messageFormat2('大雾') | messageFormat3('后天') }}</p>
+    <p>{{ message | messageFormat4('大雾', '后天') }}</p>
+    <p>{{ ctime | dateFormat }}</p>
+</div>
+
+<div id="app2">
+    <p>{{ ctime | dateFormat }}</p>
+</div>
+
+<!-- VM层（挂载数据层） -->
+<script>
+    Vue.filter('messageFormat', function (data) {
+        return data.replace('晴天', '雨雪');
+    });
+
+    Vue.filter('messageFormat2', function (data, arg) {
+        return data.replace('晴天', arg);
+    });
+
+    Vue.filter('messageFormat3', function (data, arg) {
+        return data.replace('今天', arg);
+    });
+
+    Vue.filter('messageFormat3', function (data, arg) {
+        return data.replace('今天', arg);
+    });
+
+    Vue.filter('messageFormat4', function (data, arg1, arg2) {
+        return data.replace('晴天', arg1).replace('今天', arg2);
+    });
+
+    // 全局过滤器和私有过滤器
+    Vue.filter('dateFormat', function (data) {
+        return new Date(data).toLocaleString();
+    });
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            message: '今天的天气是 晴天！',
+            ctime: new Date()
+        }
+    });
+
+    var vm2 = new Vue({
+        el: '#app2',
+        data: {
+            ctime: new Date()
+        },
+        filters: {//私有过滤器
+            dateFormat(data) {
+                return new Date(data).toLocaleDateString();
+            }
+        }
+    });
+</script>
+```
 
 
 
+> 用于常见的文本格式化，用在插件表达式和v-bind表达式中。
+>
+> 过滤器调用 `{{ 插值变量 | 过滤器名称}}`；
+>
+> 过滤器定义 `Vue.filter("过滤器名称", function(data){/* 过滤处理 */})
+>
+> 过滤器方法的第一个参数默认是当前数据，其余的是参数。
+>
+> 全局过滤器-所有的vm实例共享。
+
+### 键盘修饰符
+
+```html
+<!-- 视图层 -->
+<div id="app">
+    <input type="text" v-model="text" @keyup.enter="submit('enter')">
+    <!-- F2按键码 触发  按键码 https://cn.vuejs.org/v2/guide/events.html#按键码 -->
+    <input type="text" v-model="text" @keyup.113="submit('113')">
+    <!-- F2按键码别名 触发 -->
+    <input type="text" v-model="text" @keyup.myF2="submit('myF2')">
+</div>
+
+<!-- VM层（挂载数据层） -->
+<script>
+    // 自定义全局按键修饰符
+    Vue.config.keyCodes.myF2 = 113;
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            text: ''
+        },
+        methods: {
+            submit(type) {
+                console.log(`keyup.${type}输入内容为：${this.text}`);
+            }
+        }
+    });
+</script>
+```
+
+### 自定义指令
+
+```html
+<!-- 视图层 -->
+<div id="app">
+    <input type="text" v-focus v-color="'green'">
+    <h3 v-color="'pink'">{{ message }}</h3>  
+    <p v-fontweight="100+200 * 4">{{ message }}</p>  
+    <p v-backgroundcolor="'red'">{{ message }}</p>  
+</div>
+
+<!-- VM层（挂载数据层） -->
+<script>
+    Vue.directive('focus', {
+        bind(el) {
+            console.log('指令的声明周期之 bind');
+        },
+        inserted(el) {
+            el.focus();
+            console.log('指令的声明周期之 inserted');
+        },
+        updated() {
+            console.log('指令的声明周期之 updated');
+        }
+    });
+    // 自定义一个 设置字体颜色的 指令
+    Vue.directive('color', {
+        // 样式只有通过指令绑定给了元素，不管这个元素有没有插到页面中去，这个元素肯定有一个内联样式，肯定会显示到页面。
+        bind: function (el, binding) {
+            console.log(binding);
+            el.style.color = binding.value;
+        }
+    });
+    // 如果在bind和inserted触发相同的行为，二部关心其他钩子函数
+    Vue.directive('backgroundcolor', function(el, binding){
+        el.style.backgroundColor = binding.value;
+    });
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello World!'
+        },
+        // 局部指令
+        directives: {
+        //     focus: {
+        //         inserted: function(el) { el.focus();}
+        //     },
+        fontweight: {
+                bind:function(el, binding) {
+                    el.style.fontWeight = binding.value;}
+            }
+        }
+    });
+</script>
+```
 
 
 
+| 钩子函数 | 说明                                          | 执行次数   |
+| -------- | --------------------------------------------- | ---------- |
+| bind     | 每当指令绑定到元素上时，元素还没有插入到DOM中 | 一次       |
+| inserted | 插入到DOM中时                                 | 一次       |
+| updated  | 当VNode更新的时候，执行updated，              | 可触发多次 |
+
+> 说明：1、`Vue.directive(指令名称（不带v-）, 钩子函数对象);`；
+>
+> ​           2、钩子函数中，第一个参数是el（原生js对象）；钩子函数第二个参数binding，expression-原始表达式，value-表达式的值，name-指令名称，rawName-指令全名称；
+>
+> ​           3、样式实现在bind，和js行为相关在inserted实现，防止行为不生效。
+
+### Vue生命周期函数(钩子)
+
+![Vue生命周期](https://cn.vuejs.org/images/lifecycle.png)
+
+* 创建期间的声明周期函数
+  - beforeCreate
+  - created
+* 运行期间的声明周期函数
+* 销毁期间的声明周期函数
+
+### 数据请求
+
+### 动画
 
 
 
